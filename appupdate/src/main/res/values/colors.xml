@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="appupdate_colorPrimary">#0078c8</color>
+    <color name="appupdate_color_333333">#333333</color>
+    <color name="appupdate_color_ffffff">#ffffff</color>
+    <color name="appupdate_color_b9b9b9">#b9b9b9</color>
+    <color name="appupdate_color_ff0000">#ff0000</color>
+</resources>

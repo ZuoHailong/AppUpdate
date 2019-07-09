@@ -1,0 +1,13 @@
+<resources>
+    <string name="appupdate_soft_updata">App update</string>
+    <string name="appupdate_confirm_update">Update now</string>
+    <string name="appupdate_cancle_update">Cancle</string>
+    <string name="appupdate_update_content">Update content:&#160;</string>
+    <string name="appupdate_new_version">New version</string>
+    <string name="appupdate_tip">Tip</string>
+    <string name="appupdate_confirm">Confirm</string>
+    <string name="appupdate_open_permission">Open</string>
+    <string name="appupdate_cancel">Cancel</string>
+    <string name="appupdate_no_write_permission">Sorry, denied permission will not be updated. Please open in Settings. </string>
+    <string name="appupdate_error">Update error</string>
+</resources>
