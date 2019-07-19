@@ -42,7 +42,7 @@ dependencies {
     implementation rootProject.ext.dependencies["espresso_core"]
     implementation rootProject.ext.dependencies["constraintlayout"]
     //Material design
-    api rootProject.ext.dependencies["design"]
+    implementation rootProject.ext.dependencies["design"]
 
     implementation rootProject.ext.dependencies["okhttp"]
 }
