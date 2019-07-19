@@ -7,11 +7,11 @@ ext {
      */
     versions = [
             applicationId           : "com.hailong.appupdate",        //应用ID
-            versionCode             : 10,                    //版本号
-            versionName             : "0.1",              //版本名称
+            versionCode             : 11,                    //版本号
+            versionName             : "0.1.1",              //版本名称
 
             compileSdkVersion       : 28,
-            minSdkVersion           : 19,
+            minSdkVersion           : 21,
             targetSdkVersion        : 28,
 
             androidSupportSdkVersion: "28.0.0",
@@ -21,9 +21,10 @@ ext {
             runnerVersion           : "1.1.0",
             espressoVersion         : "3.1.0",
             annotationsVersion      : "28.0.0",
+            designVersion           : "1.0.0-beta01",
 
             okhttpVersion           : "4.0.0",
-            appUpdateVersion           : "0.1"
+            appUpdateVersion        : "0.1"
 
     ]
 
@@ -35,6 +36,7 @@ ext {
             "junit"              : "junit:junit:${versions["junitVersion"]}",
             //注释处理器
             "support_annotations": "com.android.support:support-annotations:${versions["annotationsVersion"]}",
+            "design"             : "com.google.android.material:material:${versions["designVersion"]}",
 
             "okhttp"             : "com.squareup.okhttp3:okhttp:${versions["okhttpVersion"]}",
             "appUpdate"          : "com.github.ZuoHailong:AppUpdate:${versions["appUpdateVersion"]}"

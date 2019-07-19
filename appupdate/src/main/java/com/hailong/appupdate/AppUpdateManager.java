@@ -68,9 +68,6 @@ public class AppUpdateManager {
             this.context = activity;
         }
 
-
-
-
         /**
          * 设置apk下载链接
          *

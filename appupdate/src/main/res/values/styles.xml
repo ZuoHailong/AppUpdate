@@ -2,7 +2,7 @@
 
     <style name="appupdate_listview_optimize_style">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:listSelector">@android:color/transparent</item>
         <item name="android:fadingEdge">none</item>

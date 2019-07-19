@@ -1,6 +1,7 @@
 package com.hailong.appupdate.widget;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.ComponentName;
@@ -23,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -30,8 +32,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hailong.appupdate.bean.DownloadParamsBean;
 import com.hailong.appupdate.R;
@@ -43,6 +47,7 @@ import com.hailong.appupdate.utils.ViewUtil;
 import com.hailong.appupdate.utils.WeakHandler;
 
 import static android.content.Context.BIND_AUTO_CREATE;
+import static com.hailong.appupdate.utils.ViewUtil.initListViewMeasure;
 
 /**
  * Describe：更新询问框
@@ -283,7 +288,11 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
         UpdateContentAdapter adapter = new UpdateContentAdapter(context, content);
         lvUpdateContent.setAdapter(adapter);
 
+        //重新计算listview高度，避免出现ConstraintLayout在某些机型上充满屏幕的bug
+        initListViewMeasure(lvUpdateContent, adapter);
+
     }
+
 
     /**
      * 弹窗，请求跳转到设置页面开启权限
