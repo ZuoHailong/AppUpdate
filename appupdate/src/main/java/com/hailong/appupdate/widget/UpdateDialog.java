@@ -28,6 +28,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hailong.appupdate.bean.DownloadParamsBean;
@@ -45,6 +47,11 @@ import com.hailong.appupdate.utils.ApkUtil;
 import com.hailong.appupdate.utils.ImageUtil;
 import com.hailong.appupdate.utils.ViewUtil;
 import com.hailong.appupdate.utils.WeakHandler;
+import com.hailong.appupdate.view.recyclerview.CommonRecycleViewAdapter;
+import com.hailong.appupdate.view.recyclerview.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 import static com.hailong.appupdate.utils.ViewUtil.initListViewMeasure;
@@ -61,8 +68,9 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
 
     private ImageView ivTop;
     private TextView tvTitle, tvNewVerName, tvConfirm, tvCancle, tvDownloadStatus, tvProgress;
+    private RelativeLayout layoutContent;
     private Group groupProgress;
-    private ListView lvUpdateContent;
+    private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
     private static Context context;
@@ -70,6 +78,7 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
 
     private boolean isForce;
     private String[] content;
+    private CommonRecycleViewAdapter<String> adapter;
     private String title, newVerName, apkUrl, confirmText, cancleText;
     private int topResId, confirmBgColor, cancelBgColor, confirmBgResource, cancelBgResource, progressDrawable;
     private long fileContentLength;
@@ -247,10 +256,11 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
         tvTitle = view.findViewById(R.id.tvTitle);
         tvNewVerName = view.findViewById(R.id.tvNewVersionName);
         groupProgress = view.findViewById(R.id.groupProgress);
-        lvUpdateContent = view.findViewById(R.id.lvUpdateContent);
+        recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         tvProgress = view.findViewById(R.id.tvProgress);
         tvDownloadStatus = view.findViewById(R.id.tvDownloadStatus);
+        layoutContent = view.findViewById(R.id.layoutContent);
 
         /**
          * 根据外部设置，初始化Dialog
@@ -285,12 +295,21 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
             tvConfirm.setText(confirmText);
         if (!TextUtils.isEmpty(cancleText))
             tvCancle.setText(cancleText);
-        UpdateContentAdapter adapter = new UpdateContentAdapter(context, content);
-        lvUpdateContent.setAdapter(adapter);
 
-        //重新计算listview高度，避免出现ConstraintLayout在某些机型上充满屏幕的bug
-        initListViewMeasure(lvUpdateContent, adapter);
+        List<String> contentList = new ArrayList<>();
 
+        for (String str : content) {
+            contentList.add(str);
+        }
+
+        adapter = new CommonRecycleViewAdapter<String>(context, R.layout.appupdate_listitem_update_content, contentList) {
+            @Override
+            public void convert(ViewHolder holder, String content, int position) {
+                ((TextView) holder.getView(R.id.tv_content)).setText(content);
+            }
+        };
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 
 
@@ -364,8 +383,8 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
                     tvProgress.setText("0%");
                     progressBar.setProgress(0);
                     // TODO 模糊化
-                    tvDownloadStatus.setBackground(new BitmapDrawable(getResources(), ImageUtil.blur(context, ImageUtil.screenShotView(lvUpdateContent),
-                            lvUpdateContent.getWidth(), lvUpdateContent.getHeight())));
+                    tvDownloadStatus.setBackground(new BitmapDrawable(getResources(), ImageUtil.blur(context, ImageUtil.screenShotView(recyclerView),
+                            layoutContent.getWidth(), layoutContent.getHeight())));
                     tvDownloadStatus.setVisibility(View.VISIBLE);
                 }
 

@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:lineSpacingExtra="3dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:textSize="15sp" />
 
 </LinearLayout>
