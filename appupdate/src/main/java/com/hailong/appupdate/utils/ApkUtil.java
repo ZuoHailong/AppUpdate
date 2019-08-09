@@ -113,7 +113,7 @@ public class ApkUtil {
     public static void installApp(Context context, String apkPath) {
         Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", new File(apkPath));
