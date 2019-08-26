@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<paths>
+    <!--
     //每个节点都支持两个属性：name+path
     //path：需要临时授权访问的路径（.代表所有路径）
     //name：就是你给这个访问路径起个名字
-    <paths>
+    -->
+    <root-path
+        name="root"
+        path="" />
 
-        //Environment.getExternalStorageDirectory()
-        <external-path
-            name="externalStorage"
-            path="." />
+    <files-path
+        name="files_path"
+        path="." />
 
-    </paths>
-</resources>
+    <cache-path
+        name="cache_path"
+        path="." />
+
+    <external-path
+        name="external_path"
+        path="." />
+
+    <external-files-path
+        name="external_files_path"
+        path="." />
+
+    <external-cache-path
+        name="external_cache_path"
+        path="." />
+</paths>
