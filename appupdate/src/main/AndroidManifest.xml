@@ -5,15 +5,14 @@
     <application>
         <!-- FileProvider配置访问路径，适配7.0及其以上 -->
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.appupdate.fileProvider"
+            android:name=".CustomProvider"
+            android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/appupdate_fileprovicer_paths" />
         </provider>
-
 
         <service
             android:name=".download.DownloadService"

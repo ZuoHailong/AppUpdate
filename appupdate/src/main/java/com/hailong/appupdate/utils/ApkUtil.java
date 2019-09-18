@@ -116,7 +116,7 @@ public class ApkUtil {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".appupdate.fileProvider", new File(apkPath));
+            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", new File(apkPath));
         } else {
             uri = Uri.fromFile(new File(apkPath));
         }
