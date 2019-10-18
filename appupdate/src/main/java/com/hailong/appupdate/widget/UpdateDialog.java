@@ -48,6 +48,7 @@ import com.hailong.appupdate.utils.ImageUtil;
 import com.hailong.appupdate.utils.ViewUtil;
 import com.hailong.appupdate.utils.WeakHandler;
 import com.hailong.appupdate.view.recyclerview.CommonRecycleViewAdapter;
+import com.hailong.appupdate.view.recyclerview.MaxHeightRecyclerView;
 import com.hailong.appupdate.view.recyclerview.ViewHolder;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
     private TextView tvTitle, tvNewVerName, tvConfirm, tvCancle, tvDownloadStatus, tvProgress;
     private RelativeLayout layoutContent;
     private Group groupProgress;
-    private RecyclerView recyclerView;
+    private MaxHeightRecyclerView recyclerView;
     private ProgressBar progressBar;
 
     private static Context context;

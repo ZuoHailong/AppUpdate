@@ -1,152 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:appupdate="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:paddingBottom="20dp">
 
     <ImageView
         android:id="@+id/ivTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/appupdate_bg_app_top" />
-
-    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/appupdate_bg_app_top"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/appupdate_color_ffffff"
-        android:paddingTop="16dp">
+        app:layout_constraintLeft_toLeftOf="@id/ivTop"
+        app:layout_constraintRight_toRightOf="@id/ivTop"
+        app:layout_constraintTop_toBottomOf="@id/ivTop">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layoutContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/appupdate_new_version"
-            android:textColor="@color/appupdate_color_333333"
-            android:textSize="17sp" />
+            android:paddingBottom="70dp"
+            app:layout_constraintTop_toBottomOf="@id/layout1">
 
-        <TextView
-            android:id="@+id/tvNewVersionName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/tvTitle"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/tvTitle"
-            android:textColor="@color/appupdate_color_333333"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvDownloadStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/appupdate_error"
+                android:textColor="@color/appupdate_color_ff0000"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
-    </RelativeLayout>
+            <com.hailong.appupdate.view.recyclerview.MaxHeightRecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/appupdate_color_ffffff"
+                android:paddingTop="10dp"
+                appupdate:appupdate_maxHeight="300dp" />
 
-    <RelativeLayout
-        android:id="@+id/layoutContent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appupdate_color_ffffff"
-            android:fadingEdge="none"
-            android:overScrollMode="never"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingRight="20dp"></androidx.recyclerview.widget.RecyclerView>
+            android:paddingTop="16dp"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvDownloadStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/appupdate_error"
-            android:textColor="@color/appupdate_color_ff0000"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/appupdate_new_version"
+                android:textColor="@color/appupdate_color_333333"
+                android:textSize="17sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tvNewVersionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="2.2.2"
+                android:textColor="@color/appupdate_color_333333"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tvTitle"
+                app:layout_constraintLeft_toRightOf="@id/tvTitle" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/appupdate_color_ffffff"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tvConfirm"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/appupdate_corner5dp_color_primary"
-            android:gravity="center"
-            android:text="@string/appupdate_confirm_update"
-            android:textColor="@color/appupdate_color_ffffff"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/tvCancle"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginLeft="10dp" />
-
-        <TextView
-            android:id="@+id/tvCancle"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="15dp"
-            android:background="@drawable/appupdate_corner5dp_b9b9b9"
-            android:gravity="center"
-            android:text="@string/appupdate_cancle_update"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tvConfirm"
-            app:layout_constraintEnd_toStartOf="@+id/tvConfirm"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:max="100"
-            android:progressDrawable="@drawable/appupdate_progress_bg"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="60dp"
+            android:background="@color/appupdate_color_ffffff"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/layoutContent">
 
-        <TextView
-            android:id="@+id/tvProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:text="0%"
-            android:textColor="@color/appupdate_color_333333"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progressBar" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:max="100"
+                android:progressDrawable="@drawable/appupdate_progress_bg"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/groupProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="progressBar, tvProgress" />
+            <TextView
+                android:id="@+id/tvCancle"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/appupdate_corner5dp_b9b9b9"
+                android:gravity="center"
+                android:text="@string/appupdate_cancle_update"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                app:layout_constraintBaseline_toBaselineOf="@id/tvConfirm"
+                app:layout_constraintEnd_toStartOf="@+id/tvConfirm"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tvConfirm"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/appupdate_corner5dp_color_primary"
+                android:gravity="center"
+                android:text="@string/appupdate_confirm_update"
+                android:textColor="@color/appupdate_color_ffffff"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/tvCancle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginLeft="10dp" />
+
+            <TextView
+                android:id="@+id/tvProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="0%"
+                android:textColor="@color/appupdate_color_333333"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/progressBar" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="progressBar,tvProgress" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

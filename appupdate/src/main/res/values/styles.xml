@@ -9,4 +9,8 @@
         <item name="android:scrollbars">none</item>
         <item name="android:scrollingCache">false</item>
     </style>
+
+    <declare-styleable name="appupdate_MaxHeightRecyclerView">
+        <attr name="appupdate_maxHeight" format="dimension" />
+    </declare-styleable>
 </resources>
