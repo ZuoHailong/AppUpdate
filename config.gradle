@@ -7,8 +7,8 @@ ext {
      */
     versions = [
             applicationId           : "com.hailong.appupdate",        //应用ID
-            versionCode             : 21,                    //版本号
-            versionName             : "0.2.1",              //版本名称
+            versionCode             : 22,                    //版本号
+            versionName             : "0.2.2",              //版本名称
 
             compileSdkVersion       : 28,
             minSdkVersion           : 19,
