@@ -10,12 +10,35 @@ android {
         versionName rootProject.ext.versions.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
+    signingConfigs {
+        config {
+            keyAlias 'DrumBeat'
+            keyPassword 'drumbeat'
+            storeFile file('../keystore/keystore_drumbeat.jks')
+            storePassword 'drumbeat'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.config
             minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false  //移出无用代码
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.config
+            //debug模式不进行崩溃上报，加快构建速度
+            ext.enableCrashlytics = false
+            zipAlignEnabled true
+            shrinkResources false  //移出无用代码
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
