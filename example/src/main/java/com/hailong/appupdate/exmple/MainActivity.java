@@ -29,7 +29,8 @@ public class MainActivity extends FragmentActivity {
     private void updateByApkUrl() {
         AppUpdateManager.Builder builder = new AppUpdateManager.Builder(MainActivity.this);
         //TODO github上的文件下载极慢（甚至连接失败），测试时可以更换为自己服务器上的文件链接
-        builder.apkUrl("https://github.com/ZuoHailong/AppUpdate/blob/master/example/file/appupdate_example.apk")
+//        builder.apkUrl("https://github.com/ZuoHailong/AppUpdate/blob/master/example/file/appupdate_example.apk")
+        builder.apkUrl("https://drumbeat-update-app.oss-cn-hangzhou.aliyuncs.com/Centralizer/develop/AppManager.apk")
 //                .newVerName("2.2.2")
                 .updateForce(false)
                 .updateContent(arrayContent)
