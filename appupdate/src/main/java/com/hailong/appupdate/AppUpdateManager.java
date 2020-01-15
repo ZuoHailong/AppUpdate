@@ -195,7 +195,7 @@ public class AppUpdateManager {
          * @return
          */
         public Builder confirmBgColor(@ColorInt int color) {
-            this.confirmBgColor = confirmBgColor;
+            this.confirmBgColor = color;
             return this;
         }
 
@@ -217,7 +217,7 @@ public class AppUpdateManager {
          * @return
          */
         public Builder cancelBgColor(@ColorInt int color) {
-            this.cancelBgColor = cancelBgColor;
+            this.cancelBgColor = color;
             return this;
         }
 
