@@ -14,10 +14,10 @@
                 android:resource="@xml/appupdate_fileprovicer_paths" />
         </provider>
 
-        <service
+        <!--<service
             android:name=".download.DownloadService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true" />-->
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

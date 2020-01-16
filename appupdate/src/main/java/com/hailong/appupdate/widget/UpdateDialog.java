@@ -1,13 +1,10 @@
 package com.hailong.appupdate.widget;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,33 +13,24 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.hailong.appupdate.bean.DownloadParamsBean;
 import com.hailong.appupdate.R;
-import com.hailong.appupdate.download.DownloadListener;
-import com.hailong.appupdate.download.DownloadService;
 import com.hailong.appupdate.utils.ApkUtil;
 import com.hailong.appupdate.utils.ImageUtil;
 import com.hailong.appupdate.utils.ViewUtil;
@@ -50,12 +38,11 @@ import com.hailong.appupdate.utils.WeakHandler;
 import com.hailong.appupdate.view.recyclerview.CommonRecycleViewAdapter;
 import com.hailong.appupdate.view.recyclerview.MaxHeightRecyclerView;
 import com.hailong.appupdate.view.recyclerview.ViewHolder;
+import com.yanzhenjie.kalle.Kalle;
+import com.yanzhenjie.kalle.download.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.Context.BIND_AUTO_CREATE;
-import static com.hailong.appupdate.utils.ViewUtil.initListViewMeasure;
 
 /**
  * Describe：更新询问框
@@ -82,23 +69,6 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
     private CommonRecycleViewAdapter<String> adapter;
     private String title, newVerName, apkUrl, confirmText, cancleText;
     private int topResId, confirmBgColor, cancelBgColor, confirmBgResource, cancelBgResource, progressDrawable;
-    private long fileContentLength;
-    private boolean breakpoint;
-
-    private DownloadService.DownloadBinder downloadBinder;
-
-    private ServiceConnection connection = new ServiceConnection() {
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            downloadBinder = (DownloadService.DownloadBinder) service;
-        }
-
-    };
 
     @Nullable
     @Override
@@ -107,19 +77,7 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         View view = inflater.inflate(R.layout.appupdate_dialogfrag_update, container);
         initView(view);
-
-        /*使用service进行下载，支持断点下载*/
-        Intent intent = new Intent(context, DownloadService.class);
-        context.startService(intent); // 启动服务
-        context.bindService(intent, connection, BIND_AUTO_CREATE); // 绑定服务
-
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        context.unbindService(connection);
     }
 
     @Override
@@ -208,11 +166,6 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
         return updateDialog;
     }
 
-    public UpdateDialog setApkContentLength(long apkContentLength) {
-        this.fileContentLength = apkContentLength;
-        return updateDialog;
-    }
-
     public UpdateDialog setUpdateContent(String[] content) {
         this.content = content;
         return updateDialog;
@@ -240,11 +193,6 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
 
     public UpdateDialog setCancelText(String cancelText) {
         this.cancleText = cancelText;
-        return updateDialog;
-    }
-
-    public UpdateDialog isBreakpoint(boolean breakpoint) {
-        this.breakpoint = breakpoint;
         return updateDialog;
     }
 
@@ -345,60 +293,60 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
      */
     private void update() {
         if (!TextUtils.isEmpty(apkUrl)) {
-            DownloadParamsBean bean = new DownloadParamsBean();
-            bean.setFileDownloadUrl(apkUrl);
-            bean.setFileContentLength(fileContentLength);
-            bean.setBreakpoint(breakpoint);
-            /*下载监听，在service的AsyncTask中回调*/
-            downloadBinder.startDownload(context, bean, new DownloadListener() {
-                @Override
-                public void onStart() {
-                    handler.sendEmptyMessage(MSG_WHAT_DOWNLOAD_START);
-                }
 
-                @Override
-                public void onProgress(int progress) {
-                    tvProgress.setText(progress + "%");
-                    progressBar.setProgress(progress);
-                }
+            String fileName = ApkUtil.getApkName(apkUrl);
+            String directory = ApkUtil.getApkFileDir(context);
 
-                @Override
-                public void onSuccess(String filePath) {
-                    tvConfirm.setVisibility(View.VISIBLE);
-                    if (!isForce)
-                        tvCancle.setVisibility(View.VISIBLE);
-                    groupProgress.setVisibility(View.GONE);
-                    tvProgress.setText("0%");
-                    progressBar.setProgress(0);
-                    ApkUtil.installApp(context, filePath);
-                    if (!isForce)
-                        dismiss();
-                }
+            Kalle.Download.get(apkUrl)
+                    .directory(directory)
+                    .fileName(fileName)
+                    .onProgress((progress, byteCount, speed) -> {
+                        tvProgress.setText(progress + "%");
+                        progressBar.setProgress(progress);
+                    })
+                    .perform(new Callback() {
+                        @Override
+                        public void onStart() {
+                            handler.sendEmptyMessage(MSG_WHAT_DOWNLOAD_START);
+                        }
 
-                @Override
-                public void onFailed() {
-                    tvConfirm.setVisibility(View.VISIBLE);
-                    if (!isForce)
-                        tvCancle.setVisibility(View.VISIBLE);
-                    groupProgress.setVisibility(View.GONE);
-                    tvProgress.setText("0%");
-                    progressBar.setProgress(0);
-                    // TODO 模糊化
-                    tvDownloadStatus.setBackground(new BitmapDrawable(getResources(), ImageUtil.blur(context, ImageUtil.screenShotView(recyclerView),
-                            layoutContent.getWidth(), layoutContent.getHeight())));
-                    tvDownloadStatus.setVisibility(View.VISIBLE);
-                }
+                        @Override
+                        public void onFinish(String path) {
+                            tvConfirm.setVisibility(View.VISIBLE);
+                            if (!isForce)
+                                tvCancle.setVisibility(View.VISIBLE);
+                            groupProgress.setVisibility(View.GONE);
+                            tvProgress.setText("0%");
+                            progressBar.setProgress(0);
+                            ApkUtil.installApp(context, path);
+//                            if (!isForce)
+                            dismiss();
+                        }
 
-                @Override
-                public void onPaused() {
+                        @Override
+                        public void onException(Exception e) {
+                            tvConfirm.setVisibility(View.VISIBLE);
+                            if (!isForce)
+                                tvCancle.setVisibility(View.VISIBLE);
+                            groupProgress.setVisibility(View.GONE);
+                            tvProgress.setText("0%");
+                            progressBar.setProgress(0);
+                            // TODO 模糊化
+                            tvDownloadStatus.setBackground(new BitmapDrawable(getResources(), ImageUtil.blur(context, ImageUtil.screenShotView(recyclerView),
+                                    layoutContent.getWidth(), layoutContent.getHeight())));
+                            tvDownloadStatus.setVisibility(View.VISIBLE);
+                        }
 
-                }
+                        @Override
+                        public void onCancel() {
+                            dismiss();
+                        }
 
-                @Override
-                public void onCanceled() {
+                        @Override
+                        public void onEnd() {
 
-                }
-            });
+                        }
+                    });
         }
     }
 
@@ -427,55 +375,5 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
             return true;
         }
     });
-
-    /**
-     * 版本更新内容ListAdapter
-     */
-    private static class UpdateContentAdapter extends BaseAdapter {
-
-        private Context context;
-        private String[] array;
-
-        public UpdateContentAdapter(Context context, String[] array) {
-            this.context = context;
-            this.array = array;
-        }
-
-        @Override
-        public int getCount() {
-            if (array == null)
-                return 0;
-            return array.length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return array[i];
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int position, View view, ViewGroup viewGroup) {
-            ViewHolder viewHolder;
-            if (view == null) {
-                viewHolder = new ViewHolder();
-                view = LayoutInflater.from(context).inflate(R.layout.appupdate_listitem_update_content, null);
-                viewHolder.tv_content = view.findViewById(R.id.tv_content);
-                view.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) view.getTag();
-            }
-            viewHolder.tv_content.setText(array[position]);
-            return view;
-        }
-
-        private class ViewHolder {
-            TextView tv_content;
-        }
-    }
 
 }

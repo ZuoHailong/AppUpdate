@@ -29,8 +29,8 @@ public class AppUpdateManager {
                 .setTitle(builder.title)
                 .setConfirmText(builder.confirmText)
                 .setCancelText(builder.cancleText)
-                .setApkContentLength(builder.apkContentLength)
-                .isBreakpoint(builder.breakpoint)
+//                .setApkContentLength(builder.apkContentLength)
+//                .isBreakpoint(builder.breakpoint)
                 .show(builder.context.getFragmentManager(), "update");
     }
 
@@ -56,8 +56,8 @@ public class AppUpdateManager {
         private int confirmBgResource;//确定按钮背景
         private int cancelBgResource;//取消按钮背景
         private int progressDrawable;//进度条样式
-        private long apkContentLength;//apk文件大小
-        private boolean breakpoint;//是否支持断点下载，默认不支持（针对访问接口获取文件流的下载方式）
+//        private long apkContentLength;//apk文件大小
+//        private boolean breakpoint;//是否支持断点下载，默认不支持（针对访问接口获取文件流的下载方式）
 
         /**
          * 构建器
@@ -151,10 +151,10 @@ public class AppUpdateManager {
          * @param apkContentLength
          * @return
          */
-        public Builder apkContentLength(long apkContentLength) {
+        /*public Builder apkContentLength(long apkContentLength) {
             this.apkContentLength = apkContentLength;
             return this;
-        }
+        }*/
 
         /**
          * 是否支持断点下载，默认不支持
@@ -164,18 +164,10 @@ public class AppUpdateManager {
          * @param breakpoint
          * @return
          */
-        public Builder breakpoint(boolean breakpoint) {
+        /*public Builder breakpoint(boolean breakpoint) {
             this.breakpoint = breakpoint;
             return this;
-        }
-
-
-
-
-        //TODO
-        //TODO
-        //TODO
-        //TODO
+        }*/
 
         /**
          * 设置标题背景的资源图片
