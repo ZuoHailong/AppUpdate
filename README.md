@@ -30,7 +30,7 @@
 
 ```
     dependencies {
-	        implementation 'com.github.ZuoHailong:AppUpdate:0.2.2'
+	        implementation 'com.github.ZuoHailong:AppUpdate:0.2.6'
 	}
 	
 ```
