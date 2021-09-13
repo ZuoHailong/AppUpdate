@@ -30,7 +30,7 @@
 
 ```
     dependencies {
-	        implementation 'com.github.ZuoHailong:AppUpdate:0.2.6'
+	        implementation 'com.github.DrumbeatSoft:AppUpdate:0.2.7'
 	}
 	
 ```
