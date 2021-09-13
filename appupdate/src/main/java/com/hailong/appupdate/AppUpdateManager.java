@@ -31,7 +31,7 @@ public class AppUpdateManager {
                 .setCancelText(builder.cancleText)
 //                .setApkContentLength(builder.apkContentLength)
 //                .isBreakpoint(builder.breakpoint)
-                .show(builder.context.getFragmentManager(), "update");
+                .showAllowingStateLoss(builder.context.getFragmentManager(), "update");
     }
 
     /**

@@ -3,6 +3,8 @@ package com.hailong.appupdate.widget;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,6 +43,7 @@ import com.hailong.appupdate.view.recyclerview.ViewHolder;
 import com.yanzhenjie.kalle.Kalle;
 import com.yanzhenjie.kalle.download.Callback;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -376,4 +379,27 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
         }
     });
 
+    public void showAllowingStateLoss(FragmentManager manager, String tag) {
+        try {
+            Field dismissed = DialogFragment.class.getDeclaredField("mDismissed");
+            dismissed.setAccessible(true);
+            dismissed.set(this, false);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        try {
+            Field shown = DialogFragment.class.getDeclaredField("mShownByMe");
+            shown.setAccessible(true);
+            shown.set(this, true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commitAllowingStateLoss();
+    }
 }
