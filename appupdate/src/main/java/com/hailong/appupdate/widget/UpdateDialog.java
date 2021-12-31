@@ -399,7 +399,9 @@ public class UpdateDialog extends DialogFragment implements View.OnClickListener
             e.printStackTrace();
         }
         FragmentTransaction ft = manager.beginTransaction();
-        ft.add(this, tag);
+        if (!this.isAdded()) {
+            ft.add(this, tag);
+        }
         ft.commitAllowingStateLoss();
     }
 }
